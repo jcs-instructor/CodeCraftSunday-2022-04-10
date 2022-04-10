@@ -32,7 +32,7 @@ A
 Note: These examples use dots in place of spaces only for readability.
 Your diamond must contain spaces where there are dots.
 
-
+---
 
 Retro:
 
@@ -50,3 +50,70 @@ What worked well, need to do it more?
 - Using Refactoring tools of VS Code
 - Look into Gitpod workspaces
 - Split Screen
+
+---
+
+// Code as of 4/10/2022 5:53 PM EDT
+
+import {expect} from 'chai'
+import 'mocha'
+
+describe('Diamond', () => {
+    it('is the simplest Diamond', () => {
+        expect(diamond('A')).to.equal('A')
+    })
+
+    it('is the Diamond for B', () => {
+        expect(diamond('B')).to.equal(
+`.A.
+B.B
+.A.
+`
+        )
+    })
+
+    it('is the Diamond for C', () => {
+        expect(diamond('C')).to.equal(
+`..A..
+.B.B.
+C...C
+.B.B.
+..A..
+`
+        )
+    })
+})
+
+function diamond(letter: string): string {
+    if(letter === 'C') {
+        const top = "..A.." + "\n";
+        return top +
+               ".B.B." + "\n" +
+               middleLine("C") +
+               ".B.B." + "\n" +
+               top; 
+    }
+
+    if(letter === 'B') {
+        let middle = middleLine(letter);
+        let top = topLine(letter);
+        return top + middle + top;
+    }
+    return 'A';
+}
+
+function topLine(diamondLetter: string) {
+    const spacesInMiddle = numberOfSpacesInMiddle(diamondLetter);
+    const diamondWidth = spacesInMiddle + 2;
+    const spacesInTopSide = (diamondWidth - 1) / 2;
+    let dots = '.'.repeat(spacesInTopSide);
+    return dots + 'A' + dots + '\n'
+}
+
+function middleLine(diamondLetter: string) {
+    return diamondLetter + '.'.repeat(numberOfSpacesInMiddle(diamondLetter)) + diamondLetter + '\n'
+}
+
+function numberOfSpacesInMiddle(diamondLetter: string) {
+    return (diamondLetter.charCodeAt(0) - 'A'.charCodeAt(0)) * 2 - 1;
+}
